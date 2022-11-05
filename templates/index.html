@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+
+    <title>Talk with Doraemon</title>
+</head>
+<body>
+    <container class="container">
+        <!-- <div>
+            <iframe src='https://my.spline.design/molang3dcopy-a467aca40b5f3695f9805fece1c3e6fe/' frameborder='0' width='100%' height='100%'></iframe>
+        </div> -->
+        <div id="output" class="hide"></div>
+
+        <div class="botbody">
+            <!-- <img src="images/doraemon.png" /> -->
+
+            <img class="doraImage hidden" src="static/images/doradora.png" />
+
+            <div class="pannel">
+    
+                <div class="interact">
+
+                    <img src="static/images/voice.svg" class="voiceIcon" />
+        
+                </div>
+            </div>
+            <!-- <div class="listenMessage hidden">Say something, I'm listening ...</div> -->
+
+            
+
+        </div>
+
+        
+        
+
+    </container>
+
+    <!-- <script src="script.js"></script> -->
+    <!-- <script src="{{url_for('static', filename='scripts/script.js')}}"></script> -->
+
+    <script>
+const voiceIcon = document.querySelector(".voiceIcon")
+const doraImage = document.querySelector(".doraImage")
+const container = document.querySelector(".container")
+
+let  userInfo = {
+                'name': 'John Brown',
+                'type': 'Admin',
+                'rep': ""
+
+            }
+
+
+// const listenMessage = document.querySelector(".listenMessage")
+
+let playSound = () => new Audio("static/sounds/click.wav").play()
+
+let playSoundTTre = () => new Audio("static/sounds/cctre.mp3").play()
+
+let playMusic = () => new Audio("static/sounds/music.mp3").play()
+
+let playSoundTTreNe = () => new Audio("static/sounds/cctre2.mp3").play()
+let appear = () => new Audio("static/sounds/appear.mp3").play()
+let magicwand = () => new Audio("static/sounds/magicwand.mp3").play()
+
+
+
+
+let yesOfcourse = () => new Audio("static/sounds/response/yesOfcourse.mp3").play()
+
+let imdoingwell = () => new Audio("static/sounds/response/imdoingwell.mp3").play()
+let hi = () => new Audio("static/sounds/response/hi.mp3").play()
+let hinobi = () => new Audio("static/sounds/response/hinobi.mp3").play()
+let handsome = () => new Audio("static/sounds/response/handsome.mp3").play()
+let noProblem = () => new Audio("static/sounds/response/noProblem.mp3").play()
+
+let peaceOfcake = () => new Audio("static/sounds/response/peaceOfcake.mp3").play()
+
+
+
+let yesIknow = () => new Audio("static/sounds/response/yesIknow.mp3").play()
+let hereIam = () => new Audio("static/sounds/response/hereIam2.mp3").play()
+let hereIamHelp = () => new Audio("static/sounds/response/hereIam.mp3").play()
+
+
+let realTalk = () => new Audio("static/sounds/response/cccare.mp3").play()
+let realTalk2 = () => new Audio("static/sounds/response/realTalk2.mp3").play()
+let realTalk3 = () => new Audio("static/sounds/response/realTalk3.mp3").play()
+
+let noProblem2 = () => new Audio("static/sounds/response/noProblem2.mp3").play()
+
+
+
+let ywc = () => new Audio("static/sounds/response/uwc.mp3").play()
+let matane = () => new Audio("static/sounds/response/matane.mp3").play()
+let goodbye = () => new Audio("static/sounds/response/goodbye.mp3").play()
+let goodbyeNobita = () => new Audio("static/sounds/response/goodbyeNobita.mp3").play()
+
+
+let noDiy = () => new Audio("static/sounds/response/noDiy.mp3").play()
+
+
+let ok = () => new Audio("static/sounds/response/ok.mp3").play()
+let noIcant = () => new Audio("static/sounds/response/noIcant.mp3").play()
+let noStop = () => new Audio("sounds/response/noStop.mp3").play()
+let imhere = () => new Audio("static/sounds/response/imhere.mp3").play()
+
+
+
+
+
+
+
+
+
+
+
+
+voiceIcon.addEventListener('click', e => {
+    e.preventDefault();
+    console.log("clicked")
+    playSound()
+    userInfo['rep'] = "";
+    
+    // voiceIcon.classList.toggle("saySomething")
+    // listenMessage.classList.toggle("hidden")
+    //listen to voice and show it in screen
+    //listen to voice and show it in console
+    // listenVoice() 
+    runSpeechRecognition()
+
+
+})
+
+// function listenVoice() {
+
+// }
+
+
+function runSpeechRecognition() {
+    voiceIcon.classList.toggle("saySomething")
+    // listenMessage.classList.toggle("hidden")
+    // get output div reference
+    var output = document.getElementById("output");
+    // get action element reference
+    var action = document.getElementById("action");
+    // new speech recognition object
+    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+    var recognition = new SpeechRecognition();
+
+    // This runs when the speech recognition service starts
+    recognition.onstart = function() {
+        // action.innerHTML = "<small>listening, please speak...</small>";
+    };
+    
+    recognition.onspeechend = function() {
+        voiceIcon.classList.toggle("saySomething")
+        // listenMessage.classList.toggle("hidden")
+        // action.innerHTML = "<small>stopped listening, hope you are done...</small>";
+        recognition.stop();
+    }
+  
+    // This runs when the speech recognition service returns result
+    recognition.onresult = function(event) {
+        var transcript = event.results[0][0].transcript;
+        var confidence = event.results[0][0].confidence;
+        output.innerHTML = "<b>Nobita:</b> " + transcript + "<br/> <b>Confidence:</b> " + confidence*100+"%";
+        output.classList.remove("hide");
+        // botTalk(chatbot(transcript))
+        userInfo['rep'] = transcript;
+        chatbot(transcript)
+
+    };
+  
+     // start recognition
+     recognition.start();
+     
+     
+}
+
+
+function sendUserInfo(){
+            const request = new XMLHttpRequest()
+            request.open('POST', `/processUserInfo/${JSON.stringify(userInfo)}`)
+            request.onload = () => {
+                const flaskMessage = request.responseText
+                console.log(flaskMessage)
+                botTalk(flaskMessage)
+
+            }
+
+            request.send()
+
+}
+
+
+function botTalk(m){
+    var msg = new SpeechSynthesisUtterance();
+    var voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[10];
+    msg.voiceURI = "native";
+    msg.volume = 1;
+    msg.rate = 1;
+    msg.pitch = 0.8;
+    msg.text = m;
+    msg.lang = 'en-US';
+    speechSynthesis.speak(msg);
+}
+
+
+
+function chatbot(text){
+    message = text.toLowerCase()
+    let reply = ""
+
+    if(message == "hello anyone here"){
+        // setTimeout(()=>{
+        //   yesOfcourse()
+
+        // },1000)
+        yesOfcourse()
+
+        setTimeout(()=>{
+            appear();
+            doraImage.classList.remove("hidden");
+            doraImage.classList.add("appear");
+        }, 2000)
+        setTimeout(()=>{
+            hereIam()
+        },6000)
+    }else{
+        sendUserInfo();
+         
+    }
+
+    // console.log(reply)
+    // return reply
+    
+}
+
+
+
+
+    </script>
+
+</body>
+</html>
